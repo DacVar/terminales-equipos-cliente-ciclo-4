@@ -1,11 +1,19 @@
 # Servidor de pruebas del Registro de Visitas.
 # Se corre con: ansible-playbook provisionar.yml
+# Probado en GitHub Codespaces (Linux, Python 3.12) con ansible-core 2.21.6
 - name: Servidor de pruebas - Registro de Visitas
   hosts: localhost
   connection: local
   become: true
 
   tasks:
+    - name: El programa sqlite3 está instalado
+      ansible.builtin.apt:
+        name: sqlite3
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+
     - name: Existe el usuario de sistema registro
       ansible.builtin.user:
         name: registro
@@ -19,8 +27,45 @@
         owner: registro
         group: registro
 
+    - name: Está app.py en el servidor
+      ansible.builtin.copy:
+        src: app.py
+        dest: /opt/registro/app.py
+        owner: registro
+        group: registro
+
+    - name: Está crear_db.py en el servidor
+      ansible.builtin.copy:
+        src: crear_db.py
+        dest: /opt/registro/crear_db.py
+        owner: registro
+        group: registro
+
+    - name: Está requirements.txt en el servidor
+      ansible.builtin.copy:
+        src: requirements.txt
+        dest: /opt/registro/requirements.txt
+        owner: registro
+        group: registro
+
+    - name: La configuración del ambiente de pruebas
+      ansible.builtin.copy:
+        dest: /opt/registro/registro.env
+        content: |
+          TZ=America/Bogota
+          REGISTRO_DB=/opt/registro/registro.db
+        owner: registro
+        group: registro
+
     - name: El aviso aparece al abrir la terminal
       become: false
       ansible.builtin.lineinfile:
         path: "{{ lookup('env', 'HOME') }}/.bashrc"
         line: 'echo "*** SERVIDOR DE PRUEBAS - Registro de Visitas ***"'
+
+    # Parte 5: comentada porque acumula una visita en cada corrida (ver PROVISION.md).
+    # - name: La base existe con la visita de verificación
+    #   ansible.builtin.command: >
+    #     sqlite3 /opt/registro/registro.db
+    #     "CREATE TABLE IF NOT EXISTS visitas (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, momento TEXT NOT NULL);
+    #      INSERT INTO visitas (nombre, momento) VALUES ('Prueba de aprovisionamiento', '2026-10-27 18:30');"
