@@ -1,0 +1,2 @@
+# Los guiones de bash y el YAML se ejecutan en Linux: siempre con finales de línea LF.
+* text=auto eol=lf

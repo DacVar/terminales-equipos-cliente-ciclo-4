@@ -1,0 +1,5 @@
+# Ambiente virtual: se reconstruye con instalar.sh, no se versiona.
+.venv/
+# Base de datos local: la crea instalar.sh.
+registro.db
+__pycache__/
