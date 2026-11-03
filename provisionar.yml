@@ -1,0 +1,26 @@
+# Servidor de pruebas del Registro de Visitas.
+# Se corre con: ansible-playbook provisionar.yml
+- name: Servidor de pruebas - Registro de Visitas
+  hosts: localhost
+  connection: local
+  become: true
+
+  tasks:
+    - name: Existe el usuario de sistema registro
+      ansible.builtin.user:
+        name: registro
+        system: true
+        create_home: false
+
+    - name: Existe la carpeta de la aplicación
+      ansible.builtin.file:
+        path: /opt/registro
+        state: directory
+        owner: registro
+        group: registro
+
+    - name: El aviso aparece al abrir la terminal
+      become: false
+      ansible.builtin.lineinfile:
+        path: "{{ lookup('env', 'HOME') }}/.bashrc"
+        line: 'echo "*** SERVIDOR DE PRUEBAS - Registro de Visitas ***"'
