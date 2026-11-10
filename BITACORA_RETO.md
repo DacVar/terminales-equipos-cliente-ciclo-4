@@ -8,7 +8,7 @@
 
 | # | Qué pasó (error, sorpresa, algo que tuve que hacer a mano) | Qué hice |
 |---|---|---|
-| 1 | | |
+| 1 | a da sd asd as d| |
 | 2 | | |
 | 3 | | |
 

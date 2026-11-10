@@ -25,3 +25,6 @@ Después abrir la pestaña **Ports** del Codespace (puerto 5000).
   base. No arregla nada.
 - `arrancar.sh`: exige `REGISTRO_CLAVE` en el entorno y fija la zona horaria
   `America/Bogota` antes de arrancar.
+
+
+  ## REGISTRO_CLAVE=CLAVE
